@@ -14,5 +14,7 @@ if(${OPENGL_LIB} STREQUAL "OPENGL_LIB-NOTFOUND" OR
     message(FATAL_ERROR "Some packages may not be installed (try e.g. apt-get install ${UBUNTU_TRUSTY_PACKAGES})")
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
 add_subdirectory(common)
 add_subdirectory(lab1_cg_opengl)
