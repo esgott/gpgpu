@@ -22,7 +22,7 @@ make
 ```
 
 If you want to generate an Eclipse project, you can add `-G "Eclipse CDT4 - Unix Makefiles"`
-option to CMake.
+option to CMake. If you want to build with debug flag, add `-DCMAKE_BUILD_TYPE=debug` option.
 
 You can run the executables compiled (for example, to try lab1, run `./lab1_cg_opengl/lab1`).
 See CMake files for executable names.
