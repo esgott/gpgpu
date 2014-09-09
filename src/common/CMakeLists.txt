@@ -1,0 +1,7 @@
+add_library(camera STATIC camera.cpp)
+add_library(framebuffer STATIC framebuffer.cpp)
+add_library(matrix4x4 STATIC matrix4x4.cpp)
+add_library(pointgrid STATIC pointgrid.cpp)
+add_library(quad STATIC quad.cpp)
+add_library(shader STATIC shader.cpp)
+add_library(texture STATIC texture.cpp)
