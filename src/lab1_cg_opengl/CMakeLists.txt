@@ -11,3 +11,5 @@ target_link_libraries(lab1
     ${NVIDIA_CG_LIB}
     ${NVIDIA_CGGL_LIB}
     )
+
+add_dependencies(lab1 generate_symlinks)
