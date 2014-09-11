@@ -1,0 +1,37 @@
+struct VS_IN
+{
+    float4 position : POSITION;
+    float4 texCoord : TEXCOORD;
+    float3 normal: NORMAL;
+};
+
+struct VS_OUT
+{
+    float4 hPos : POSITION;
+    float2 texCoord : TEXCOORD;
+    float4 color:COLOR;
+};
+
+VS_OUT vs(VS_IN In,
+          uniform float4x4 mvp : state.matrix.mvp,
+          uniform float3 lightdir)
+{
+    VS_OUT Out = (VS_OUT) 0;
+
+    Out.hPos = mul(mvp, In.position);
+    Out.texCoord = In.texCoord.xy;
+
+    Out.color = dot(In.normal, normalize(lightdir));
+    Out.color = saturate(Out.color);
+
+    return Out;
+}
+
+float4 fs(VS_OUT In,
+          uniform sampler2D texture : register(s0),
+          uniform float2 shift) : COLOR
+{
+    float4 textureColor = tex2D(texture, In.texCoord + shift);
+    float4 lightingColor = float4(In.color.rgb,1);
+    return textureColor * lightingColor;
+}
