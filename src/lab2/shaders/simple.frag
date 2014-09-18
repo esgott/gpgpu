@@ -7,5 +7,5 @@ in vec2 fTexCoord;
 // fTexCoord -> outcolor
 void main()
 {
-	
+	outcolor = vec4(fTexCoord, 0, 0);
 }
