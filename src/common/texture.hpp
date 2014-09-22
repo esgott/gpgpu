@@ -30,23 +30,27 @@
 #include <IL/ilu.h>
 #include <IL/ilut.h>
 
-class Texture2D{
+class Texture2D {
 private:
-  GLuint handle;
-  GLuint width, height;
-  GLuint bpp;
+    GLuint handle;
+    GLuint width, height;
+    GLuint bpp;
 
 public:
-  Texture2D();
-  ~Texture2D();
+    Texture2D();
+    ~Texture2D();
 
-  int getWidth(){ return width; }
-  int getHeight(){ return height; }
+    int getWidth() {
+        return width;
+    }
+    int getHeight() {
+        return height;
+    }
 
-  void initialize(GLuint width, GLuint height, GLuint bpp);
-  void setData(float* data);
-  void loadFromFile(std::string fileName);
-  GLuint getTextureHandle();
+    void initialize(GLuint width, GLuint height, GLuint bpp);
+    void setData(float* data);
+    void loadFromFile(std::string fileName);
+    GLuint getTextureHandle();
 };
 
 #endif

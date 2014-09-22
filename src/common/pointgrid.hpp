@@ -25,18 +25,18 @@
 
 #include "shader.hpp"
 
-class PointGrid{
+class PointGrid {
 private:
-  int width;
-  int height;
+    int width;
+    int height;
 
-  GLuint vertexArray;
+    GLuint vertexArray;
 
 public:
-  PointGrid(int width, int height);
-  ~PointGrid();
+    PointGrid(int width, int height);
+    ~PointGrid();
 
-  void render(Shader* shader);
+    void render(Shader* shader);
 };
 
 #endif

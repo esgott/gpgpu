@@ -23,49 +23,48 @@
 
 #include <GL/glew.h>
 
-class Framebuffer{
+class Framebuffer {
 private:
-  GLuint handle;
-  GLuint* colorBuffer;
-  GLuint depthBuffer;
+    GLuint handle;
+    GLuint* colorBuffer;
+    GLuint depthBuffer;
 
-  GLuint width, height;
-  GLuint planes;
+    GLuint width, height;
+    GLuint planes;
 
-  GLenum* buffers;
+    GLenum* buffers;
 
-  bool hasMipMaps;
-  int numMips;
+    bool hasMipMaps;
+    int numMips;
 
 public:
-  Framebuffer(GLuint width, GLuint height, GLuint planes, bool genMipMaps = false, bool floatingpoint = true);
-  ~Framebuffer();
+    Framebuffer(GLuint width, GLuint height, GLuint planes, bool genMipMaps = false, bool floatingpoint = true);
+    ~Framebuffer();
 
-  void setRenderTarget(int mipLevel = -1);
-  void disableRenderTarget();
+    void setRenderTarget(int mipLevel = -1);
+    void disableRenderTarget();
 
-  GLuint getColorBuffer(unsigned int plane){
-    return colorBuffer[plane];
-  }
+    GLuint getColorBuffer(unsigned int plane) {
+        return colorBuffer[plane];
+    }
 
-  void clear();
+    void clear();
 
-  int getWidth(){
-    return width;
-  }
+    int getWidth() {
+        return width;
+    }
 
-  int getHeight(){
-    return height;
-  }
+    int getHeight() {
+        return height;
+    }
 
-  int getLevels(){
-	  return numMips;
-  }
+    int getLevels() {
+        return numMips;
+    }
 
-  GLuint getHandle(){
+    GLuint getHandle() {
         return handle;
-  }
+    }
 };
 
 #endif
-

@@ -25,21 +25,21 @@
 
 #include "shader.hpp"
 
-class Quad{
+class Quad {
 private:
-  GLuint vertexArray;
+    GLuint vertexArray;
 
-  static GLfloat vertices[18];
-  GLuint vertexBuffer;
+    static GLfloat vertices[18];
+    GLuint vertexBuffer;
 
-  static GLfloat texCoords[12];
-  GLuint texCoordBuffer;
+    static GLfloat texCoords[12];
+    GLuint texCoordBuffer;
 
 public:
-  Quad();
-  ~Quad();
+    Quad();
+    ~Quad();
 
-  void render(Shader* shader);
+    void render(Shader* shader);
 };
 
 #endif
