@@ -5,6 +5,8 @@ project(gpgpu)
 include(libs.cmake)
 include(symlink.cmake)
 
+include_directories(common)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 add_subdirectory(common)
