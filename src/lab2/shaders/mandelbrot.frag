@@ -21,7 +21,6 @@ out vec4 outColor;
 // IF divergent: outcolor := 0
 // ELSE outcolor := 1
 
-void main(){
-  
-}
+void main() {
 
+}

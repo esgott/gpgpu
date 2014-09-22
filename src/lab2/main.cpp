@@ -85,110 +85,105 @@ void convolution() {
 }
 
 void init() {
-	glewInit();
+    glewInit();
 
-	fullscreenQuad = new Quad();
-	simpleShader = new Shader("../src/lab2/shaders/passthrough.vert",
-			"../src/lab2/shaders/simple.frag");
+    fullscreenQuad = new Quad();
+    simpleShader = new Shader("../src/lab2/shaders/passthrough.vert", "../src/lab2/shaders/simple.frag");
 
-	shaderMandelbrot = new Shader("../src/lab2/shaders/passthrough.vert",
-			"../src/lab2/shaders/mandelbrot.frag");
+    shaderMandelbrot = new Shader("../src/lab2/shaders/passthrough.vert", "../src/lab2/shaders/mandelbrot.frag");
 
-	texture = new Texture2D();
-	texture->loadFromFile(std::string("../img/lena.jpg"));
+    texture = new Texture2D();
+    texture->loadFromFile(std::string("../img/lena.jpg"));
 
-	shaderThreshold = new Shader("../src/lab2/shaders/passthrough.vert",
-			"../src/lab2/shaders/threshold.frag");
-	shaderEdgeDetection = new Shader("../src/lab2/shaders/passthrough.vert",
-			"../src/lab2/shaders/edgeDetection.frag");
-	shaderConvolution = new Shader("../src/lab2/shaders/passthrough.vert",
-			"../src/lab2/shaders/convolution.frag");
+    shaderThreshold = new Shader("../src/lab2/shaders/passthrough.vert", "../src/lab2/shaders/threshold.frag");
+    shaderEdgeDetection = new Shader("../src/lab2/shaders/passthrough.vert", "../src/lab2/shaders/edgeDetection.frag");
+    shaderConvolution = new Shader("../src/lab2/shaders/passthrough.vert", "../src/lab2/shaders/convolution.frag");
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 }
 
 void display() {
-	glClearColor(0.17f, 0.4f, 0.6f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.17f, 0.4f, 0.6f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	switch (example) {
-	case 1:
-		glutReshapeWindow(600, 600);
-		mandelbrot();
-		break;
+    switch (example) {
+    case 1:
+        glutReshapeWindow(600, 600);
+        mandelbrot();
+        break;
 
-	case 2:
-		glutReshapeWindow(texture->getWidth(), texture->getHeight());
-		threshold();
-		break;
+    case 2:
+        glutReshapeWindow(texture->getWidth(), texture->getHeight());
+        threshold();
+        break;
 
-	case 3:
-		glutReshapeWindow(texture->getWidth(), texture->getHeight());
-		edgeDetection();
-		break;
+    case 3:
+        glutReshapeWindow(texture->getWidth(), texture->getHeight());
+        edgeDetection();
+        break;
 
-	case 4:
-		glutReshapeWindow(texture->getWidth(), texture->getHeight());
-		convolution();
-		break;
-	}
+    case 4:
+        glutReshapeWindow(texture->getWidth(), texture->getHeight());
+        convolution();
+        break;
+    }
 
-	glutSwapBuffers();
+    glutSwapBuffers();
 }
 
 void keyboard(unsigned char key, int x, int y) {
-	switch (key) {
+    switch (key) {
 
-	case 27:
-		exit(0);
-		break;
+    case 27:
+        exit(0);
+        break;
 
-	case '1':
-		example = 1;
-		break;
-	case '2':
-		example = 2;
-		break;
-	case '3':
-		example = 3;
-		break;
-	case '4':
-		example = 4;
-		break;
+    case '1':
+        example = 1;
+        break;
+    case '2':
+        example = 2;
+        break;
+    case '3':
+        example = 3;
+        break;
+    case '4':
+        example = 4;
+        break;
 
-		// TODO
-		// additional key bindings
+        // TODO
+        // additional key bindings
 
-	default:
-		std::cout << "Unbinded key: " << (unsigned int) key << std::endl;
-	}
+    default:
+        std::cout << "Unbinded key: " << (unsigned int) key << std::endl;
+    }
 
-	glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 void reshape(int width, int height) {
-	windowWidth = width;
-	windowHeight = height;
-	glViewport(0, 0, width, height);
+    windowWidth = width;
+    windowHeight = height;
+    glViewport(0, 0, width, height);
 }
 
 int main(int argc, char* argv[]) {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
-	glutInitWindowSize(windowWidth, windowHeight);
-	glutCreateWindow("GPGPU 2. labor: glsl");
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+    glutInitWindowSize(windowWidth, windowHeight);
+    glutCreateWindow("GPGPU 2. labor: glsl");
 
-	init();
+    init();
 
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
-	glutKeyboardFunc(keyboard);
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard);
 
-	glutMainLoop();
+    glutMainLoop();
 
-	return (0);
+    return (0);
 }
 

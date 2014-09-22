@@ -5,7 +5,6 @@ in vec2 fTexCoord;
 
 // TODO
 // fTexCoord -> outcolor
-void main()
-{
-	
+void main() {
+
 }

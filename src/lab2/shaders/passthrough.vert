@@ -9,6 +9,5 @@ out vec2 fTexCoord;
 // position -> gl_Position
 // texCoord -> fTexCoord
 void main(void) {
-   
-}
 
+}
