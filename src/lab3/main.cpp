@@ -194,18 +194,18 @@ void init() {
     }
 
     fullscreenQuad = new Quad();
-    simpleShader = new Shader("../shaders/passthrough.vert", "../shaders/simple.frag");
-    gaussShader = new Shader("../shaders/passthrough.vert", "../shaders/gauss.frag");
-    gaussShaderH = new Shader("../shaders/passthrough.vert", "../shaders/gaussH.frag");
-    gaussShaderV = new Shader("../shaders/passthrough.vert", "../shaders/gaussV.frag");
-    WE_addForce = new Shader("../shaders/passthrough.vert", "../shaders/addForce.frag");
-    WE_iteration_1 = new Shader("../shaders/passthrough.vert", "../shaders/iteration.frag");
-    WE_iteration_2 = new Shader("../shaders/passthrough.vert", "../shaders/iteration2.frag");
-    WE_iteration_3 = new Shader("../shaders/passthrough.vert", "../shaders/iteration3.frag");
-    WE_visualize = new Shader("../shaders/passthrough.vert", "../shaders/visualize.frag");
+    simpleShader = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/simple.frag");
+    gaussShader = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/gauss.frag");
+    gaussShaderH = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/gaussH.frag");
+    gaussShaderV = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/gaussV.frag");
+    WE_addForce = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/addForce.frag");
+    WE_iteration_1 = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/iteration.frag");
+    WE_iteration_2 = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/iteration2.frag");
+    WE_iteration_3 = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/iteration3.frag");
+    WE_visualize = new Shader("../src/lab3/shaders/passthrough.vert", "../src/lab3/shaders/visualize.frag");
 
     texture = new Texture2D();
-    texture->loadFromFile(std::string("../../../Common/images/lena.jpg"));
+    texture->loadFromFile(std::string("../img/lena.jpg"));
 
     if (1 == example) {
         glutReshapeWindow(texture->getWidth(), texture->getHeight());
