@@ -52,22 +52,38 @@ Framebuffer* computeBuffer[2];
 int inputBuffer = 0;
 int npasses = 15;
 
-// TODO
-// LOOP I = 0 .. npasses
-//  IF I == npasses - 1
-//   renderTarget := screen
-//  ELSE
-//   renderTarget := computeBuffer[(inputBuffer + 1) % 2]
-//
-//  IF npasses == 0
-//   colorMap := texture
-//  ELSE
-//   colorMap := computeBuffer[inputBuffer]->getColorBuffer(0)
-//
-//  GaussShader
-//  inputBuffer = (inputBuffer + 1) % 2
-void gaussMultipass() {
+void gaussMultipass() { // TODO
+    // LOOP I = 0 .. npasses
+    //  IF I == npasses - 1
+    //   renderTarget := screen
+    //  ELSE
+    //   renderTarget := computeBuffer[(inputBuffer + 1) % 2]
+    //
+    //  IF npasses == 0
+    //   colorMap := texture
+    //  ELSE
+    //   colorMap := computeBuffer[inputBuffer]->getColorBuffer(0)
+    //
+    //  GaussShader
+    //  inputBuffer = (inputBuffer + 1) % 2
+    gaussShader->enable();
 
+    computeBuffer[(inputBuffer) % 2]->setRenderTarget();
+    gaussShader->bindUniformTexture("colorMap", texture->getTextureHandle(), 0);
+    fullscreenQuad->render(gaussShader);
+
+    for (int i = 1; i < npasses - 1; i++) {
+        computeBuffer[(inputBuffer + 1) % 2]->setRenderTarget();
+        gaussShader->bindUniformTexture("colorMap", computeBuffer[inputBuffer % 2]->getColorBuffer(0), 0);
+        fullscreenQuad->render(gaussShader);
+        inputBuffer++;
+    }
+
+    computeBuffer[(inputBuffer) % 2]->disableRenderTarget();
+    gaussShader->bindUniformTexture("colorMap", computeBuffer[(inputBuffer + 1) % 2]->getColorBuffer(0), 0);
+    fullscreenQuad->render(gaussShader);
+
+    gaussShader->disable();
 }
 
 Shader* gaussShaderV;
@@ -112,7 +128,23 @@ Framebuffer* WE_computeBuffer[2];
 // inputMap := WE_computeBuffer[inputBuffer]->getColorBuffer(0), textureUnit := 0
 // WE_visualize
 void waveEquation1() {
+    WE_iteration_1->enable();
 
+    WE_computeBuffer[(inputBuffer + 1) % 2]->setRenderTarget();
+    WE_iteration_1->bindUniformTexture("inputMap", WE_computeBuffer[inputBuffer % 2]->getColorBuffer(0), 0);
+    fullscreenQuad->render(WE_iteration_1);
+
+    inputBuffer++;
+
+    WE_iteration_1->disable();
+
+    WE_visualize->enable();
+
+    WE_computeBuffer[inputBuffer % 2]->disableRenderTarget();
+    WE_visualize->bindUniformTexture("inputMap", WE_computeBuffer[inputBuffer % 2]->getColorBuffer(0), 0);
+    fullscreenQuad->render(WE_visualize);
+
+    WE_visualize->disable();
 }
 
 //TODO
@@ -135,7 +167,27 @@ void waveEquation1() {
 // inputMap := WE_computeBuffer[inputBuffer]->getColorBuffer(0), textureUnit := 0
 // WE_visualize
 void waveEquation2() {
+    WE_iteration_2->enable();
 
+    WE_computeBuffer[(inputBuffer + 1) % 2]->setRenderTarget();
+    WE_iteration_2->bindUniformTexture("inputMap", WE_computeBuffer[inputBuffer % 2]->getColorBuffer(0), 0);
+    WE_iteration_2->bindUniformBool("pass", false);
+    fullscreenQuad->render(WE_iteration_2);
+
+    WE_computeBuffer[inputBuffer % 2]->setRenderTarget();
+    WE_iteration_2->bindUniformTexture("inputMap", WE_computeBuffer[(inputBuffer + 1) % 2]->getColorBuffer(0), 0);
+    WE_iteration_2->bindUniformBool("pass", true);
+    fullscreenQuad->render(WE_iteration_2);
+
+    WE_iteration_2->disable();
+
+    WE_visualize->enable();
+
+    WE_computeBuffer[(inputBuffer + 1) % 2]->disableRenderTarget();
+    WE_visualize->bindUniformTexture("inputMap", WE_computeBuffer[inputBuffer % 2]->getColorBuffer(0), 0);
+    fullscreenQuad->render(WE_visualize);
+
+    WE_visualize->disable();
 }
 
 //TODO
@@ -160,12 +212,12 @@ void resetWave() {
 }
 
 void addForce(int x, int y) {
-    WE_computeBuffer[inputBuffer]->setRenderTarget();
+    WE_computeBuffer[inputBuffer % 2]->setRenderTarget();
     WE_addForce->enable();
     WE_addForce->bindUniformInt2("center", x, 600 - y);
     fullscreenQuad->render(WE_addForce);
     WE_addForce->disable();
-    WE_computeBuffer[inputBuffer]->disableRenderTarget();
+    WE_computeBuffer[inputBuffer % 2]->disableRenderTarget();
 }
 
 int example = 1;
@@ -274,7 +326,11 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
 
     case 27:
+    case 'q':
         exit(0);
+        break;
+
+    case 'r':
         break;
 
     case '1':

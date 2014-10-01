@@ -17,5 +17,12 @@ out vec4 outColor;
 // textureSize: textureSize(samplerName, mipmap)
 
 void main() {
-    outColor = vec4(0.0);
+    outColor = vec4(0);
+    for (int x = -1; x < 2; x++) {
+        for (int y = -1; y < 2; y++) {
+            outColor += texelFetch(colorMap, ivec2(gl_FragCoord.xy) + ivec2(x, y), 0) *
+                kernel[(x + 1) + 3 * (y + 1)] /
+                16.0;
+        }
+    }
 }
