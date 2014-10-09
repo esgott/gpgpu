@@ -11,5 +11,5 @@ out vec4 outColor;
 //
 // outColor = texture(samplePos) + texture(samplePos + offset)
 void main(void) {
-
+    outColor = texture(inputMap, fTexCoord) + texture(inputMap, fTexCoord + vec2(offset));
 }

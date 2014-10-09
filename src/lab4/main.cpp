@@ -66,6 +66,24 @@ void histogram() {
 
     // ----- Your code here! -------
 
+    histogramBuffer->clear();
+
+    glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_ONE, GL_ONE);
+
+    histogramShader->enable();
+
+    histogramBuffer->setRenderTarget();
+    histogramShader->bindUniformTexture("inputBuffer", texture->getTextureHandle(), 0);
+
+    grid->render(histogramShader);
+
+    histogramShader->disable();
+    histogramBuffer->disableRenderTarget();
+
+    glDisable(GL_BLEND);
+
     // -----------------------------
     glFinish();
 
@@ -75,13 +93,13 @@ void histogram() {
     glReadPixels(0, 0, 255, 1, GL_RED, GL_FLOAT, histogram);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    std::cout << "Histogram:\n----------" << std::endl;
+//    std::cout << "Histogram:\n----------" << std::endl;
     int maxValue = 0;
     for (int i = 0; i < 255; ++i) {
         maxValue = maxValue > histogram[i] ? maxValue : histogram[i];
-        std::cout << i << " : " << histogram[i] << std::endl;
+//        std::cout << i << " : " << histogram[i] << std::endl;
     }
-    std::cout << "-----------------\nMaximum: " << maxValue << std::endl;
+//    std::cout << "-----------------\nMaximum: " << maxValue << std::endl;
 
     glViewport(0, 0, windowWidth, windowHeight);
     simpleShader->enable();
@@ -184,10 +202,46 @@ void histogramEqualization() {
     // generate histogram
     // ----------- Your code ----------------
 
+    glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_ONE, GL_ONE);
+
+    histogramBuffer->setRenderTarget();
+
+    computeHistogram->bindUniformTexture("inputMap", texture->getTextureHandle(), 0);
+    computeHistogram->bindUniformFloat("incr", 1.0);
+    computeHistogram->bindUniformFloat("histogramLevels", histogramLevels);
+
+    grid->render(computeHistogram);
+
+    histogramBuffer->disableRenderTarget();
+    computeHistogram->disable();
+
     // --------------------------------------
 
     // compute cumulative histogram
     // ----------- Your code ----------------
+
+    float offset = 1.0 / histogramLevels;
+
+    for (int i = 0; i < log(histogramLevels); i++) {
+        U_cumulatedHistogramBuffer[1 - inputBuffer]->setRenderTarget();
+        computeCumulativeHistogram->enable();
+
+        computeCumulativeHistogram->bindUniformTexture("inputMap",
+                i == 0 ?
+                        U_histogramBuffer->getColorBuffer(0) :
+                        U_cumulatedHistogramBuffer[inputBuffer]->getColorBuffer(0), 0);
+        computeCumulativeHistogram->bindUniformFloat("offset", offset);
+
+        fullscreenQuad->render(computeCumulativeHistogram);
+
+        computeCumulativeHistogram->disable();
+        U_cumulatedHistogramBuffer[1 - inputBuffer]->disableRenderTarget();
+
+        inputBuffer = 1 - inputBuffer;
+        offset *= 2;
+    }
 
     // --------------------------------------
 
@@ -200,6 +254,20 @@ void histogramEqualization() {
 
     // histogram equalization
     // ----------- Your code ----------------
+
+    U_equalizedBuffer->clear();
+    U_equalizedBuffer->setRenderTarget();
+    computeEqualizedHistogram->enable();
+
+    computeEqualizedHistogram->bindUniformTexture("inputMap", texture->getTextureHandle(), 0);
+    computeEqualizedHistogram->bindUniformTexture("histogram", U_cumulatedHistogramBuffer[inputBuffer]->getColorBuffer(0), 0);
+    computeEqualizedHistogram->bindUniformFloat("level", (texture->getWidth() * texture->getHeight() / (histogramLevels / 8)));
+    computeEqualizedHistogram->bindUniformFloat("numLevel", histogramLevels / 8);
+
+    fullscreenQuad->render(computeEqualizedHistogram);
+
+    computeEqualizedHistogram->disable();
+    U_equalizedBuffer->disableRenderTarget();
 
     // --------------------------------------
 
@@ -226,13 +294,13 @@ void histogramEqualization() {
     glReadPixels(0, 0, 255, 1, GL_RED, GL_FLOAT, histogram);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    std::cout << "Histogram:\n----------" << std::endl;
+//    std::cout << "Histogram:\n----------" << std::endl;
     int maxValue = 0;
     for (int i = 0; i < 255; ++i) {
         maxValue = maxValue > histogram[i] ? maxValue : histogram[i];
-        std::cout << i << " : " << histogram[i] << std::endl;
+//        std::cout << i << " : " << histogram[i] << std::endl;
     }
-    std::cout << "-----------------\nMaximum: " << maxValue << std::endl;
+//    std::cout << "-----------------\nMaximum: " << maxValue << std::endl;
 
     glViewport(0, 0, windowWidth, windowHeight);
     U_visualizeShader->enable();
@@ -260,6 +328,17 @@ int levels = 16;
 // disable render target
 void quantizeAndHistogram() {
     // ----------- Your code ----------------
+
+    quantizeShader->enable();
+
+    quantizedBuffer->setRenderTarget();
+    quantizeShader->bindUniformTexture("inputBuffer", texture->getTextureHandle(), 0);
+    quantizeShader->bindUniformInt("levels", levels);
+
+    fullscreenQuad->render(quantizeShader);
+
+    quantizeShader->disable();
+    quantizedBuffer->disableRenderTarget();
 
     // --------------------------------------
     histogramBuffer->clear();
@@ -506,6 +585,7 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
 
     case 27:
+    case 'q':
         exit(0);
         break;
 

@@ -17,5 +17,7 @@ float I (vec2 coord) {
 // gl_Position := histogram[bucket]
 // color := 1
 void main(void) {
-
+    float luminance = I(position.xy);
+    gl_Position = vec4(2 * (luminance - 0.5), 0, 0, 1);
+    color = vec4(1);
 }
