@@ -302,15 +302,17 @@ void jacobi() {
 void gaussian() {
     std::cout << "\nGaussian elimination" << std::endl;
 
-    int n = 4;
-    int m = 3;
-    float A[] = { 2, 1, -1, 8, -3, -1, 2, -11, -2, 1, 2, -3 };
+//    int n = 4;
+//    int m = 3;
+//    float A[] = { 2,  1, -1,   8,
+//                 -3, -1,  2, -11,
+//                 -2,  1,  2,  -3 };
 
-    // int n = 6;
-    // int m = 3;
-    // float A[] = {  2, -1,  0,  1, 0, 0,
-    // 		-1,  2, -1,  0, 1, 0,
-    // 		 0, -1,  2,  0, 0, 1};
+     int n = 6;
+     int m = 3;
+     float A[] = {  2, -1,  0,  1, 0, 0,
+                   -1,  2, -1,  0, 1, 0,
+                    0, -1,  2,  0, 0, 1};
 
     cl_kernel gaussianKernel = cl.createKernel(program, "gaussian");
 
