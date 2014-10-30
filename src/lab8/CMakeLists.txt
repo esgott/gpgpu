@@ -1,8 +1,8 @@
 add_executable(lab8
     main.cpp
-    clwrapper.cpp
     )
 
 target_link_libraries(lab8
+    clwrapper
     ${OPENCL_LIB}
     )

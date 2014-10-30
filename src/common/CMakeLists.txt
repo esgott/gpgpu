@@ -1,4 +1,5 @@
 add_library(camera STATIC camera.cpp)
+add_library(clwrapper STATIC clwrapper.cpp)
 add_library(framebuffer STATIC framebuffer.cpp)
 add_library(matrix4x4 STATIC matrix4x4.cpp)
 add_library(pointgrid STATIC pointgrid.cpp)
