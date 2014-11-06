@@ -9,7 +9,7 @@ See http://cg.iit.bme.hu/portal/node/311
 First, you need to install the libraries needed. For example, on Ubuntu Trusty:
 
 ```
-sudo apt-get install cmake build-essential libglu1-mesa-dev libglew-dev freeglut3-dev libdevil-dev nvidia-cg-dev
+sudo apt-get install cmake build-essential libglu1-mesa-dev libglew-dev freeglut3-dev libdevil-dev nvidia-cg-dev opencl-headers
 ```
 
 Then, you can create a build environment, and then compile with
